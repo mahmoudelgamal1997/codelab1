@@ -1,5 +1,6 @@
 package com.example.codelab1.presentation.register
 
+import android.util.Patterns
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -18,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.codelab1.presentation.auth.CustomTextField
 import com.example.codelab1.presentation.component.CustomButton
+import java.util.regex.Pattern
 
 @Composable
 fun RegisterScreen(
@@ -28,6 +30,7 @@ fun RegisterScreen(
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("")  }
     var isError by remember { mutableStateOf(false) }
+    var isErrorEmail by remember { mutableStateOf(false) }
     var isPasswordVisible by remember {mutableStateOf(false)}
   Column(
       horizontalAlignment = Alignment.CenterHorizontally,
@@ -57,10 +60,11 @@ fun RegisterScreen(
           placeholder = "Email",
           onValueChange = {email=it},
           errorMsg = "Email is required",
-          isError = isError,
+          isError = isErrorEmail,
           isPasswordText = false,
           modifier = Modifier
       )
+
 
       Spacer(modifier = Modifier.height(20.dp))
 
@@ -70,21 +74,28 @@ fun RegisterScreen(
           onValueChange = { password = it },
           errorMsg = "Password is required",
           isError = isError,
-          isPasswordText = false,
+          isPasswordText = isPasswordVisible,
           modifier = Modifier,
           trailingIcon = {
-              IconButton(onClick = { isPasswordVisible=!isPasswordVisible}) {
-              Icon(imageVector =  if (isPasswordVisible) Icons.Default.Add else Icons.Default.Favorite, contentDescription = "")
+              IconButton(onClick = { isPasswordVisible = !isPasswordVisible }) {
+              Icon(imageVector =  if (isPasswordVisible) Icons.Default.Add else Icons.Default.Favorite, tint = Color.White, contentDescription = "")
           }
   }
       )
       Spacer(modifier = Modifier.height(40.dp))
 
       CustomButton(content = "Register", onclick = {
-          isError = email.isEmpty() || password.isEmpty()
-//          if (!isError) loginViewModel.login(email, password)
-          navigateToCoinsScreen()
+          isErrorEmail = email.isEmpty() || !isEmailValid(email)
+          isError =  password.isEmpty()
+          if (!isError && !isErrorEmail) navigateToCoinsScreen()
+//              loginViewModel.login(email, password)
+//          navigateToCoinsScreen()
+
       })
   }
 
+}
+
+fun isEmailValid(email: String): Boolean {
+  return Patterns.EMAIL_ADDRESS.matcher(email).matches()
 }

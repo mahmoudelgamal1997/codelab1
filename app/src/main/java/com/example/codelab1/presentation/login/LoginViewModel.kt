@@ -26,8 +26,9 @@ class LoginViewModel @Inject constructor(var repository: LoginRepository):ViewMo
                 loginStateFlow.value = Resource.Loaded(data = response.body())
             }else {
                 var error = response.errorBody()?.string()
-                var errorMsg= JSONObject(error)
+                var errorMsg= JSONObject(error.toString())
                 Log.e("ggggg",errorMsg.optString("error"))
+//                Log.e("ggggg",error.toString())
 
 
                 loginStateFlow.value = Resource.Error(message = errorMsg.optString("error"))

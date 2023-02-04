@@ -1,7 +1,11 @@
 
 package com.example.codelab1
 import com.example.codelab1.BuildConfig
+import com.example.codelab1.core.util.Constants
+import com.example.codelab1.core.util.Constants.BASE_URL
 import com.example.codelab1.data.ApiInterface
+import com.example.codelab1.data.repositoriesImp.RepositoryImp
+import com.example.codelab1.domain.repositories.RepositoryInterface
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,7 +19,7 @@ import java.util.concurrent.TimeUnit
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
-    const val BASE_URL = "https://www.panel2.ado-eg.com/api/"
+//    const val BASE_URL = "https://www.panel2.ado-eg.com/api/"
 
     val interceptor: HttpLoggingInterceptor by lazy {
         if (BuildConfig.DEBUG) {
@@ -49,5 +53,11 @@ object NetworkModule {
     fun getMovieApi(retrofit: Retrofit): ApiInterface = retrofit.create(ApiInterface::class.java)
 
 
+
+
+    @Provides
+    fun provideRepository(apiInterface : ApiInterface):RepositoryInterface{
+        return RepositoryImp(apiInterface)
+    }
 
 }

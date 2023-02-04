@@ -26,6 +26,10 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 @OptIn(ExperimentalMaterialApi::class)
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    val avar by lazy {
+        println("sdfsdf")
+            "holla"
+    }
     private val mainViewModel: LoginViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,8 +42,6 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-
-
                     RootNavGraph(navHostControler = rememberNavController())
                 }
             }

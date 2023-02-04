@@ -36,6 +36,10 @@ fun LoginScreen(
     var isError by remember { mutableStateOf(false) }
     var isPasswordVisible by remember { mutableStateOf(false) }
     val loginState = loginViewModel.loginStateFlow.collectAsState()
+
+    LaunchedEffect(Unit) {
+        navigateToCoinsScreen()
+    }
     Column(
         modifier = Modifier.fillMaxSize().background(Color.Black),
         horizontalAlignment = Alignment.CenterHorizontally,
